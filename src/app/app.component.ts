@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ng-picture-viewer';
+  images = [
+    'https://picsum.photos/900/500/?random&' + Math.random(),
+    'https://picsum.photos/900/500/?random&' + Math.random(),
+    'https://picsum.photos/900/500/?random&' + Math.random(),
+    'https://picsum.photos/900/500/?random&' + Math.random(),
+  ];
 }

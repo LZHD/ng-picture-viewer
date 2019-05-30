@@ -1,16 +1,44 @@
 {
   "name": "ng-picture-viewer",
   "version": "0.0.0",
+  "description": "image-viewer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lzhd/ng-picture-viewer.git"
+  },
+  "keywords": [
+    "image-viewer",
+    "image",
+    "ng-zorro-antd",
+    "angular",
+    "ng-picture-viewer",
+    "nz-image-viewer",
+    "viewer"
+  ],
+  "author": "lzhd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lzhd/ng-picture-viewer/issues"
+  },
+  "homepage": "https://github.com/lzhd/ng-picture-viewer#readme",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve -o",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "site:build": "ng build --prod --build-optimizer",
+    "site:gh": "ng build --prod --build-optimizer --base-href /ng-picture-viewer/ && gh-pages -d ./dist",
+    "build": "node scripts/build.js",
+    "release:next": "npm run build && cd publish && npm publish --access public --tag next",
+    "release": "npm run build && cd publish && npm publish --access public"
   },
-  "private": true,
-  "dependencies": {
+  "private": false,
+  "peerDependencies": {
+    "iv-viewer": ">=2.0.1",
+    "ng-zorro-antd": ">=7.0.0"
+  },
+  "devDependencies": {
     "@angular/animations": "~7.2.0",
     "@angular/common": "~7.2.0",
     "@angular/compiler": "~7.2.0",
@@ -22,9 +50,7 @@
     "core-js": "^2.5.4",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
-    "zone.js": "~0.8.26"
-  },
-  "devDependencies": {
+    "zone.js": "~0.8.26",
     "@angular-devkit/build-angular": "~0.13.0",
     "@angular/cli": "~7.3.6",
     "@angular/compiler-cli": "~7.2.0",
@@ -43,6 +69,15 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.2.2"
+    "typescript": "~3.2.2",
+    "ng-packagr": "^5.1.0",
+    "iv-viewer": "^2.0.1",
+    "ng-zorro-antd": "^7.4.1"
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "lib/index.ts"
+    },
+    "dest": "./publish"
   }
 }

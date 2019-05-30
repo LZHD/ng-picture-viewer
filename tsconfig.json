@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ng-picture-viewer": [
+        "./lib/img-viewer.module"
+      ],
+      "ng-picture-viewer/*": [
+        "./lib/*"
+      ]
+    }
   }
 }
