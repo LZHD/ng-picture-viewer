@@ -1,15 +1,15 @@
 <div class="img-viewer {{imgViewerClass}}">
   <div class="img-viewer-panel">
     <div class="img-viewer-panel-header">
-      <div class="img-viewer-panel-header-pdf" *ngIf="showPDFOnlyOption">
-        <span class="img-viewer-panel-body-prev"><i nz-icon type="file-pdf"></i></span>
-      </div>
+<!--      <div class="img-viewer-panel-header-pdf" *ngIf="showPDFOnlyOption">-->
+<!--        <span class="img-viewer-panel-body-prev"><i nz-icon type="file-pdf"></i></span>-->
+<!--      </div>-->
       <div *ngIf="showOptions" class="img-viewer-panel-header-operation">
         <span *ngIf="zoom" (click)="zoomInImg()"><i nz-icon type="zoom-in"></i></span>
         <span *ngIf="zoom" (click)="zoomOutImg()"><i nz-icon type="zoom-out"></i></span>
         <span *ngIf="rotate" (click)="rotateImg(false)"><i nz-icon type="undo"></i></span>
         <span *ngIf="rotate" (click)="rotateImg(true)"><i nz-icon type="redo"></i></span>
-        <span *ngIf="resetZoom" (click)="resetImg(true)"><i nz-icon type="sync"></i></span>
+        <span *ngIf="resetZoom" (click)="showImg()"><i nz-icon type="sync"></i></span>
         <span *ngIf="fullscreen" (click)="fullscreenImg()"><i nz-icon type="fullscreen"></i></span>
         <span *ngIf="download" (click)="downloadImg()"><i nz-icon type="download"></i></span>
       </div>

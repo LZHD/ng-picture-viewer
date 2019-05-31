@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import ImageViewer from 'iv-viewer';
-import { FullScreenViewer } from 'iv-viewer';
+import {FullScreenViewer} from 'iv-viewer';
 
 @Component({
   selector: 'nz-picture-viewer',
@@ -67,7 +67,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   rotateImg(isClockwise: boolean) {
-    this.resetImg();
+    this.beforeRotateImg();
     if (isClockwise) {
       this.imgRotate += this.ROTATE_ANGLE;
     } else {
@@ -84,8 +84,8 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     const rotate = `rotate(${this.imgRotate}deg)`;
     if (isAnimation) {
-      this.addAnimation('iv-snap-image');
-      this.addAnimation('iv-small-image');
+      this.addTransition('iv-snap-image');
+      this.addTransition('iv-small-image');
     }
     this.setImgRotate('iv-snap-image', rotate, scale);
     this.setImgRotate('iv-small-image', rotate, scale);
@@ -97,13 +97,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 500);
   }
 
-  resetImg(resetRotate: boolean = false) {
-    // if (resetRotate) {
-    //   this.imgRotate = 0;
-    //   this.addImgRotate();
-    //   this.isVertical = true;
-    // }
-    // TODO 重置
+  beforeRotateImg() {
     this.imageViewer$.resetZoom();
     this.imageViewer$.refresh();
   }
@@ -143,6 +137,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private beforeShowImg() {
     this.imgRotate = 0;
+    this.isVertical = false;
     const currentImg = this.element.querySelector('.iv-small-image');
     if (!!currentImg) {
       this.renderer.removeChild(this.element, currentImg);
@@ -186,7 +181,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     return 0.6;
   }
 
-  private addAnimation(node) {
+  private addTransition(node) {
     this.setStyle(node, 'transition', '0.5s linear');
   }
 
