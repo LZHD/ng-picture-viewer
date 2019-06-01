@@ -1,6 +1,6 @@
 {
   "name": "ng-picture-viewer",
-  "version": "0.0.0",
+  "version": "0.0.1-beta",
   "description": "image-viewer",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/lzhd/ng-picture-viewer/issues"
   },
-  "homepage": "https://github.com/lzhd/ng-picture-viewer#readme",
+  "homepage": "https://lzhd.github.io/ng-picture-viewer",
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",

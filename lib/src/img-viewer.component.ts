@@ -1,7 +1,10 @@
-import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, Optional, Renderer2} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import ImageViewer from 'iv-viewer';
 import {FullScreenViewer} from 'iv-viewer';
+import {ImgViewerConfig} from './img-viewer.config';
+import {IvViewerType} from './interfaces/iv-viewer.type';
+import {ImgViewerType} from './interfaces/img-viewer.type';
 
 @Component({
   selector: 'nz-picture-viewer',
@@ -12,7 +15,6 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() imgViewerClass: string;
   @Input() images: string[]; // 图片地址
   @Input() showOptions = true; // 显示操作按钮
-  @Input() showPDFOnlyOption = true; // 显示PDF按钮
   @Input() rotate = true; // 是否旋转
   @Input() download = true; // 是否下载
   @Input() fullscreen = true; // 是否全屏
@@ -28,12 +30,26 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   zoomValue = 100; // 缩放最大基数
   isVertical = false; // 是否垂直
   imgRotate = 0; // 图片旋转角度
+  imgViewerConfig: ImgViewerConfig;
+  ivViewerType: IvViewerType;
+  imageViewerType: ImgViewerType;
+
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private doc: Document
+    @Inject(DOCUMENT) private doc: Document,
+    @Optional() private config: ImgViewerConfig
   ) {
     this.element = this.el.nativeElement as HTMLElement;
+    this.imgViewerConfig = new ImgViewerConfig();
+    this.ivViewerType = this.imgViewerConfig.ivViewerType;
+    this.imageViewerType = this.imgViewerConfig.imageViewerType;
+    if (this.config && this.config.ivViewerType) {
+      this.ivViewerType = Object.assign(this.ivViewerType, this.config.ivViewerType);
+    }
+    if (this.config && this.config.imageViewerType) {
+      this.imageViewerType = Object.assign(this.imageViewerType, this.config.imageViewerType);
+    }
   }
 
   ngOnInit(): void {
@@ -45,8 +61,8 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   initImgViewer() {
-    this.imageViewer$ = new ImageViewer(this.element.querySelector('.img-viewer-panel-body-content'));
-    this.fullScreenViewer$ = new FullScreenViewer();
+    this.imageViewer$ = new ImageViewer(this.element.querySelector('.img-viewer-panel-body-content'), this.ivViewerType);
+    this.fullScreenViewer$ = new FullScreenViewer(this.ivViewerType);
     this.showImg();
   }
 
@@ -119,7 +135,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   prevImg() {
     this.isVertical = false;
-    this.currentImgIndex --;
+    this.currentImgIndex--;
     if (this.currentImgIndex <= 0) {
       this.currentImgIndex = this.imgTotal;
     }
@@ -128,7 +144,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   nextImg() {
     this.isVertical = false;
-    this.currentImgIndex ++;
+    this.currentImgIndex++;
     if (this.currentImgIndex > this.imgTotal) {
       this.currentImgIndex = 1;
     }

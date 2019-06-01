@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {ModuleWithProviders, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ImgViewerComponent} from './img-viewer.component';
+import {ImgViewerConfig} from './img-viewer.config';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
 
 @NgModule({
@@ -15,4 +16,11 @@ import {NgZorroAntdModule} from 'ng-zorro-antd';
     ImgViewerComponent
   ]
 })
-export class ImgViewerModule { }
+export class ImgViewerModule {
+  static forRoot(config?: ImgViewerConfig): ModuleWithProviders {
+    return {
+      ngModule: ImgViewerModule,
+      providers: [{provide: ImgViewerConfig, useValue: config}]
+    };
+  }
+}
