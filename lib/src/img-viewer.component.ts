@@ -1,4 +1,16 @@
-import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, Optional, Renderer2} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  Renderer2
+} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import ImageViewer from 'iv-viewer';
 import {FullScreenViewer} from 'iv-viewer';
@@ -13,14 +25,15 @@ import {ImgViewerType} from './interfaces/img-viewer.type';
 })
 export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() imgViewerClass: string;
-  @Input() images: string[]; // 图片地址
-  @Input() showOptions = true; // 显示操作按钮
-  @Input() rotate = true; // 是否旋转
-  @Input() download = true; // 是否下载
-  @Input() fullscreen = true; // 是否全屏
-  @Input() resetZoom = true; // 是否恢复
-  @Input() loadOnInit = false; // 初始化加载
+  @Input() images: string[] = []; // 图片地址
+  @Input() showOperate = true; // 显示操作按钮
   @Input() zoom = true; // 放大缩小
+  @Input() rotate = true; // 是否旋转
+  @Input() reset = true; // 是否恢复
+  @Input() fullscreen = true; // 是否全屏
+  @Input() download = true; // 是否下载
+  @Output() prevChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() nextChange: EventEmitter<number> = new EventEmitter<number>();
   ROTATE_ANGLE = 90; // 固定旋转角度
   imageViewer$: any; // 图片容器
   fullScreenViewer$: any; // 全屏图像容器
@@ -60,18 +73,12 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initImgViewer();
   }
 
-  initImgViewer() {
-    this.imageViewer$ = new ImageViewer(this.element.querySelector('.img-viewer-panel-body-content'), this.ivViewerType);
-    this.fullScreenViewer$ = new FullScreenViewer(this.ivViewerType);
-    this.showImg();
-  }
-
-  zoomInImg() {
+  zoomInImg(): void {
     this.zoomValue += 10;
     this.imageViewer$.zoom(this.zoomValue);
   }
 
-  zoomOutImg() {
+  zoomOutImg(): void {
     if (this.zoomValue === 100) {
       return;
     }
@@ -82,7 +89,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.imageViewer$.zoom(this.zoomValue);
   }
 
-  rotateImg(isClockwise: boolean) {
+  rotateImg(isClockwise: boolean): void {
     this.beforeRotateImg();
     if (isClockwise) {
       this.imgRotate += this.ROTATE_ANGLE;
@@ -93,7 +100,50 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.addImgRotate();
   }
 
-  addImgRotate(isAnimation = true) {
+  fullscreenImg(): void {
+    this.beforeRotateImg();
+    this.fullScreenViewer$.show(this.images[this.currentImgIndex - 1]);
+    this.addImgRotate(false);
+  }
+
+  downloadImg(): void {
+    const download = this.renderer.createElement('a');
+    this.renderer.setAttribute(download, 'download', 'download');
+    this.renderer.setAttribute(download, 'display', 'none');
+    this.renderer.setAttribute(download, 'href', this.images[this.currentImgIndex - 1]);
+    this.renderer.setAttribute(download, 'target', '_blank');
+    this.renderer.appendChild(this.element, download);
+    download.click();
+    this.renderer.removeChild(this.renderer, download);
+  }
+
+  prevImg(): void {
+    this.isVertical = false;
+    this.currentImgIndex--;
+    if (this.currentImgIndex <= 0) {
+      this.currentImgIndex = this.imgTotal;
+    }
+    this.showImg();
+    this.prevChange.emit(this.currentImgIndex);
+  }
+
+  nextImg(): void {
+    this.isVertical = false;
+    this.currentImgIndex++;
+    if (this.currentImgIndex > this.imgTotal) {
+      this.currentImgIndex = 1;
+    }
+    this.showImg();
+    this.nextChange.emit(this.currentImgIndex);
+  }
+
+  private initImgViewer(): void {
+    this.imageViewer$ = new ImageViewer(this.element.querySelector('.img-viewer-panel-body-content'), this.ivViewerType);
+    this.fullScreenViewer$ = new FullScreenViewer(this.ivViewerType);
+    this.showImg();
+  }
+
+  private addImgRotate(isAnimation = true): void {
     let scale = '';
     if (this.isVertical && this.isImgOverVertical()) {
       scale = `scale(${this.getScale()})`;
@@ -113,45 +163,12 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 500);
   }
 
-  beforeRotateImg() {
+  private beforeRotateImg(): void {
     this.imageViewer$.resetZoom();
     this.imageViewer$.refresh();
   }
 
-  fullscreenImg() {
-    this.fullScreenViewer$.show(this.images[this.currentImgIndex - 1]);
-    this.addImgRotate(false);
-  }
-
-  downloadImg() {
-    const download = this.renderer.createElement('a');
-    this.renderer.setAttribute(download, 'download', null);
-    this.renderer.setAttribute(download, 'display', 'none');
-    this.renderer.setAttribute(download, 'href', this.images[this.currentImgIndex - 1]);
-    this.renderer.appendChild(this.element, download);
-    download.click();
-    this.renderer.removeChild(this.renderer, download);
-  }
-
-  prevImg() {
-    this.isVertical = false;
-    this.currentImgIndex--;
-    if (this.currentImgIndex <= 0) {
-      this.currentImgIndex = this.imgTotal;
-    }
-    this.showImg();
-  }
-
-  nextImg() {
-    this.isVertical = false;
-    this.currentImgIndex++;
-    if (this.currentImgIndex > this.imgTotal) {
-      this.currentImgIndex = 1;
-    }
-    this.showImg();
-  }
-
-  private beforeShowImg() {
+  private beforeShowImg(): void {
     this.imgRotate = 0;
     this.isVertical = false;
     const currentImg = this.element.querySelector('.iv-small-image');
@@ -162,7 +179,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setStyle('options-image-viewer', 'visibility', 'inherit');
   }
 
-  private showImg() {
+  private showImg(): void {
     this.beforeShowImg();
     this.imageViewer$.load(this.images[this.currentImgIndex - 1]);
   }
@@ -197,19 +214,19 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     return 0.6;
   }
 
-  private addTransition(node) {
+  private addTransition(node): void {
     this.setStyle(node, 'transition', '0.5s linear');
   }
 
-  private removeAnimation(node) {
+  private removeAnimation(node): void {
     this.setStyle(node, 'transition', 'auto');
   }
 
-  private setImgRotate(node, roate, scale) {
+  private setImgRotate(node, roate, scale): void {
     this.setStyle(node, 'transform', `${roate} ${scale}`);
   }
 
-  private setStyle(node, name, value) {
+  private setStyle(node, name, value): void {
     const elements = this.doc.querySelectorAll(`.${node}`);
     elements.forEach(ele => this.renderer.setStyle(ele, name, value));
   }
