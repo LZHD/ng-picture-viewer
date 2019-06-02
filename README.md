@@ -53,7 +53,7 @@ export class AppModule { }
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | ivViewerType | iv-viewer全局配置，见[Options](https://github.com/s-yadav/iv-viewer#Options) | `IvViewerType` | - |
-| imageViewerType | 功能提示全局配置，见[ImgViewerType](#ImgViewerType) | `ImgViewerType` | `[]` |
+| imageViewerType | 功能提示全局配置，见[ImgViewerType](#ImgViewerType) | `ImgViewerType` | - |
 
 #### ImgViewerType
 
@@ -84,7 +84,7 @@ export class AppModule { }
 | `[fullscreen]` | 是否显示全屏功能 | `boolean` | `true` |
 | `[download]` | 是否显示下载功能 | `boolean` | `true` |
 | `(prevChange)` | 切换上一张回调函数 | `EventEmitter<number>` | - |
-| `(nextChange)` | 切换下一张灰调函数 | `EventEmitter<number>` | - |
+| `(nextChange)` | 切换下一张回调函数 | `EventEmitter<number>` | - |
 
 ## License
 
