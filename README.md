@@ -1,27 +1,91 @@
-# NgPictureViewer
+# ng-picture-viewer
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
+angular image-viewer based on ng-zorro-antd and iv-viewer
 
-## Development server
+[![NPM version](https://img.shields.io/npm/v/ng-picture-viewer.svg)](https://www.npmjs.com/package/ng-picture-viewer)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Example
 
-## Code scaffolding
+[Live Example](https://lzhd.github.io/ng-picture-viewer/)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Usage
 
-## Build
+### 1. Install
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```
+npm install ng-picture-viewer --save
+```
 
-## Running unit tests
+添加 `ImgViewerModule` 模块到项目中
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```typescript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
+import zh from '@angular/common/locales/zh';
+import { ImgViewerModule } from 'ng-picture-viewer';
 
-## Running end-to-end tests
+registerLocaleData(zh);
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    NgZorroAntdModule,
+    ImgViewerModule
+  ],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+#### Global configuration
 
-## Further help
+`ImgViewerModule.forRoot`有两个参数制定全局通用配置。
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| ivViewerType | iv-viewer全局配置，见[Options](https://github.com/s-yadav/iv-viewer#Options) | `IvViewerType` | - |
+| imageViewerType | 功能提示全局配置，见[ImgViewerType](#ImgViewerType) | `ImgViewerType` | `[]` |
+
+#### ImgViewerType
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| zoomInToolTip | 放大功能提示 | `string` | `放大` |
+| zoomOutToolTip | 缩小功能提示 | `string` | `缩小` |
+| rotateLeftToolTip | 逆时针功能旋转提示 | `string` | `逆时针旋转` |
+| rotateRightToolTip | 顺时针功能提示 | `string` | `顺时针旋转` |
+| resetToolTip | 重置功能提示 | `string` | `重置` |
+| fullScreenToolTip | 全屏功能提示 | `string` | `全屏` |
+| downloadToolTip | 下载功能提示 | `string` | `下载` |
+
+### 2. Template
+
+```html
+<nz-picture-viewer [images]="images"></nz-picture-viewer>
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[imgViewerClass]` | 外部样式类 | `string` | - |
+| `[images]` | 图片路径数组 | `string[]` | `[]` |
+| `[showOperate]` | 是否显示所有操作功能 | `boolean` | `true` |
+| `[zoom]` | 是否显示放大缩小功能 | `boolean` | `true` |
+| `[rotate]` | 是否显示旋转功能 | `boolean` | `true` |
+| `[reset]` | 是否显示重置功能 | `boolean` | `true` |
+| `[fullscreen]` | 是否显示全屏功能 | `boolean` | `true` |
+| `[download]` | 是否显示下载功能 | `boolean` | `true` |
+| `(prevChange)` | 切换上一张回调函数 | `EventEmitter<number>` | - |
+| `(nextChange)` | 切换下一张灰调函数 | `EventEmitter<number>` | - |
+
+## License
+
+The MIT License (see the [LICENSE](https://github.com/lzhd/ng-picture-viewer/blob/master/LICENSE) file for the full text)
