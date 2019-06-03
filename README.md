@@ -83,6 +83,7 @@ export class AppModule { }
 | `[reset]` | 是否显示重置功能 | `boolean` | `true` |
 | `[fullscreen]` | 是否显示全屏功能 | `boolean` | `true` |
 | `[download]` | 是否显示下载功能 | `boolean` | `true` |
+| `[defaultName]` | 图片下载文件前缀 | `string` | `download` |
 | `(prevChange)` | 切换上一张回调函数 | `EventEmitter<number>` | - |
 | `(nextChange)` | 切换下一张回调函数 | `EventEmitter<number>` | - |
 

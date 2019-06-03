@@ -24,7 +24,7 @@ import {ImgViewerType} from './interfaces/img-viewer.type';
   styleUrls: ['./img-viewer.component.scss']
 })
 export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() imgViewerClass: string;
+  @Input() imgViewerClass: string; // 外部样式类
   @Input() images: string[] = []; // 图片地址
   @Input() showOperate = true; // 显示操作按钮
   @Input() zoom = true; // 放大缩小
@@ -32,6 +32,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() reset = true; // 是否恢复
   @Input() fullscreen = true; // 是否全屏
   @Input() download = true; // 是否下载
+  @Input() defaultName = 'download'; // 图片下载文件前缀
   @Output() prevChange: EventEmitter<number> = new EventEmitter<number>();
   @Output() nextChange: EventEmitter<number> = new EventEmitter<number>();
   ROTATE_ANGLE = 90; // 固定旋转角度
@@ -90,25 +91,34 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   rotateImg(isClockwise: boolean): void {
-    this.beforeRotateImg();
-    if (isClockwise) {
-      this.imgRotate += this.ROTATE_ANGLE;
-    } else {
-      this.imgRotate -= this.ROTATE_ANGLE;
-    }
-    this.isVertical = !this.isVertical;
-    this.addImgRotate();
+    this.beforeRotateImg().then((time: number) => {
+      if (isClockwise) {
+        this.imgRotate += this.ROTATE_ANGLE;
+      } else {
+        this.imgRotate -= this.ROTATE_ANGLE;
+      }
+      this.isVertical = !this.isVertical;
+      time <= 0 ? this.addImgRotate() : setTimeout(() => this.addImgRotate(), time);
+    });
   }
 
   fullscreenImg(): void {
-    this.beforeRotateImg();
-    this.fullScreenViewer$.show(this.images[this.currentImgIndex - 1]);
-    this.addImgRotate(false);
+    this.beforeRotateImg().then((time: number) => {
+      if (time <= 0) {
+        this.fullScreenViewer$.show(this.images[this.currentImgIndex - 1]);
+        this.addImgRotate(false);
+      } else {
+        setTimeout(() => {
+          this.fullScreenViewer$.show(this.images[this.currentImgIndex - 1]);
+          this.addImgRotate(false);
+        }, time);
+      }
+    });
   }
 
   downloadImg(): void {
     const download = this.renderer.createElement('a');
-    this.renderer.setAttribute(download, 'download', 'download');
+    this.renderer.setAttribute(download, 'download', `${this.defaultName}-${this.currentImgIndex}`);
     this.renderer.setAttribute(download, 'display', 'none');
     this.renderer.setAttribute(download, 'href', this.images[this.currentImgIndex - 1]);
     this.renderer.setAttribute(download, 'target', '_blank');
@@ -163,9 +173,12 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 500);
   }
 
-  private beforeRotateImg(): void {
-    this.imageViewer$.resetZoom();
-    this.imageViewer$.refresh();
+  private async beforeRotateImg(): Promise<any> {
+    this.zoomValue = 100;
+    const time: number = this.imageViewer$._state.zoomValue - this.zoomValue;
+    await this.imageViewer$.resetZoom();
+    await this.imageViewer$.refresh();
+    return time === 0 ? 0 : 500;
   }
 
   private beforeShowImg(): void {
@@ -184,20 +197,12 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.imageViewer$.load(this.images[this.currentImgIndex - 1]);
   }
 
-  /**
-   * 判断旋转后的图片是否超出展示区
-   * @returns {boolean}
-   */
   private isImgOverVertical(): boolean {
     const imgViewerHeight = this.element.clientHeight;
     const currentImgWidth = this.element.querySelector('.iv-small-image').clientWidth;
     return imgViewerHeight < currentImgWidth + 10;
   }
 
-  /**
-   * 计算图片超出后的缩放比例
-   * @returns {number}
-   */
   private getScale(): number {
     const imgViewerHeight = this.element.querySelector('.img-viewer-panel-body-content').clientHeight;
     const currentImgWidth = this.element.querySelector('.iv-small-image').clientWidth;
