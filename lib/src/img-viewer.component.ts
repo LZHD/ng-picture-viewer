@@ -192,7 +192,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setStyle('options-image-viewer', 'visibility', 'inherit');
   }
 
-  private showImg(): void {
+  showImg(): void {
     this.beforeShowImg();
     this.imageViewer$.load(this.images[this.currentImgIndex - 1]);
   }

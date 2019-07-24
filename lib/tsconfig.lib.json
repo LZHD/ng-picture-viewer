@@ -17,6 +17,8 @@
     "./index.ts"
   ],
   "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
     "skipTemplateCodegen": true
   }
 }
