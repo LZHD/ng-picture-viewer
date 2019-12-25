@@ -124,7 +124,7 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.renderer.setAttribute(download, 'target', '_blank');
     this.renderer.appendChild(this.element, download);
     download.click();
-    this.renderer.removeChild(this.renderer, download);
+    this.renderer.removeChild(this.element, download);
   }
 
   prevImg(): void {
