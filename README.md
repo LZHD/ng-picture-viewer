@@ -1,6 +1,6 @@
 # ng-picture-viewer
 
-angular image-viewer based on ng-zorro-antd and iv-viewer
+angular image-viewer based on ng-zorro-antd and [iv-viewer](https://github.com/s-yadav/iv-viewer)
 
 [![NPM version](https://img.shields.io/npm/v/ng-picture-viewer.svg)](https://www.npmjs.com/package/ng-picture-viewer)
 
