@@ -15,6 +15,10 @@ angular image-viewer based on ng-zorro-antd and iv-viewer
 ```
 npm install ng-picture-viewer --save
 ```
+全局添加第三方样式
+```
+@import "~iv-viewer/dist/iv-viewer.min.css"
+```
 
 添加 `ImgViewerModule` 模块到项目中
 
