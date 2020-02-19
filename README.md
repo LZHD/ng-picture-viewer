@@ -13,7 +13,7 @@ angular image-viewer based on ng-zorro-antd and [iv-viewer](https://github.com/s
 ### 1. Install
 
 ```
-npm install ng-picture-viewer --save
+npm install iv-viewer ng-picture-viewer --save
 ```
 全局添加第三方样式
 ```
