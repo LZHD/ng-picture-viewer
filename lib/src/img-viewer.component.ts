@@ -181,19 +181,9 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     return time === 0 ? 0 : 500;
   }
 
-  private beforeShowImg(): void {
+  showImg(): void {
     this.imgRotate = 0;
     this.isVertical = false;
-    const currentImg = this.element.querySelector('.iv-small-image');
-    if (!!currentImg) {
-      this.renderer.removeChild(this.element, currentImg);
-    }
-    this.setStyle('iv-loader', 'visibility', 'auto');
-    this.setStyle('options-image-viewer', 'visibility', 'inherit');
-  }
-
-  showImg(): void {
-    this.beforeShowImg();
     this.imageViewer$.load(this.images[this.currentImgIndex - 1]);
   }
 
@@ -227,8 +217,8 @@ export class ImgViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setStyle(node, 'transition', 'auto');
   }
 
-  private setImgRotate(node, roate, scale): void {
-    this.setStyle(node, 'transform', `${roate} ${scale}`);
+  private setImgRotate(node, rotate, scale): void {
+    this.setStyle(node, 'transform', `${rotate} ${scale}`);
   }
 
   private setStyle(node, name, value): void {
