@@ -1,8 +1,8 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ImgViewerComponent} from './img-viewer.component';
-import {ImgViewerConfig} from './img-viewer.config';
-import {NgZorroAntdModule} from 'ng-zorro-antd';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ImgViewerComponent } from './img-viewer.component';
+import { ImgViewerConfig } from './img-viewer.config';
+import { NzIconModule, NzToolTipModule } from 'ng-zorro-antd';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,8 @@ import {NgZorroAntdModule} from 'ng-zorro-antd';
   ],
   imports: [
     CommonModule,
-    NgZorroAntdModule
+    NzIconModule,
+    NzToolTipModule
   ],
   exports: [
     ImgViewerComponent

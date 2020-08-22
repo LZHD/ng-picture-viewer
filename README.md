@@ -26,13 +26,10 @@ npm install iv-viewer ng-picture-viewer --save
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { CommonModule, registerLocaleData } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
-import zh from '@angular/common/locales/zh';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { ImgViewerModule } from 'ng-picture-viewer';
-
-registerLocaleData(zh);
 
 @NgModule({
   declarations: [
@@ -42,10 +39,9 @@ registerLocaleData(zh);
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
-    NgZorroAntdModule,
+    HttpClientModule,
     ImgViewerModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
