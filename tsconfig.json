@@ -5,26 +5,24 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "target": "es2015",
     "lib": [
       "es2018",
       "dom"
     ],
     "paths": {
       "ng-picture-viewer": [
-        "./lib/img-viewer.module"
-      ],
-      "ng-picture-viewer/*": [
-        "./lib/*"
+        "./lib/index"
       ]
     }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   }
 }
