@@ -1,9 +1,7 @@
 {
   "name": "ng-picture-viewer",
-  "version": "0.0.3-beta.1",
-  "description":
-
-  "image-viewer",
+  "version": "0.0.3",
+  "description": "angular image-viewer based on ng-zorro-antd and iv-viewer",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lzhd/ng-picture-viewer.git"
