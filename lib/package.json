@@ -1,0 +1,28 @@
+{
+  "name": "ng-picture-viewer",
+  "version": "0.0.4",
+  "description": "angular image-viewer based on ng-zorro-antd and iv-viewer",
+  "author": "lzhd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lzhd/ng-picture-viewer/issues"
+  },
+  "homepage": "https://lzhd.github.io/ng-picture-viewer",
+  "keywords": [
+    "image-viewer",
+    "image",
+    "ng-zorro-antd",
+    "angular",
+    "ng-picture-viewer",
+    "nz-image-viewer",
+    "viewer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lzhd/ng-picture-viewer.git"
+  },
+  "peerDependencies": {
+    "iv-viewer": ">=2.0.1",
+    "ng-zorro-antd": ">=10.0.0"
+  }
+}
